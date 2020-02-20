@@ -16,7 +16,7 @@ public class MainController {
 	public String main(Model model) {
 		model.addAttribute("message", message);
 
-		return "index"; // view
+		return "order"; // view
 	}
 
 }
