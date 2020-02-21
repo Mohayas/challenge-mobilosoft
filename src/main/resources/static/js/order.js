@@ -74,19 +74,25 @@ var Orders = function() {
 		
 	};
 		var deleteOrder = function() {
-		$("#delete-prof-btn").on("click", function() {
+		$(".delete-btn").on("click", function() {
 			
+			var orderId = $(this).attr("to-delete-id");
+			
+			console.log(orderId);
+			var succes = false;
 			$.ajax({
-				url : "/order/"+toDeleteProfId,
+				url : "/order/"+orderId,
 				type : "DELETE",
+				async: false,
 				crossDomain : true,
 				contentType : "application/json; charset=utf-8",
 				dataType : "json",
-				headers : createAuthorizationTokenHeader(),
 				success : function(data, textStatus, jqXHR) {
 					console.log(data);
-					$("#prof-row-"+toDeleteProfId).addClass('deleted-row');
-					$("#prof-row-"+toDeleteProfId).fadeOut(3000);
+					
+					
+					 succes = true;
+					
 
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
@@ -101,7 +107,12 @@ var Orders = function() {
 					}
 				}
 			});
-
+			
+			if(succes===true){
+				
+				 $(this).closest("tr").fadeOut(3000);
+			}
+			console.log(succes);
 		});
 	};
 

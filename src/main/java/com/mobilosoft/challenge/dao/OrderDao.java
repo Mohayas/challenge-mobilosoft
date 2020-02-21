@@ -36,4 +36,16 @@ public class OrderDao {
 		order = orderRepository.save(order);
 		return mapper.asOrderDto(order);
 	}
+
+	public boolean delete(int orderid) {
+		try {
+			Order order = orderRepository.getOne(orderid);
+			orderRepository.delete(order);
+			return true;
+		} catch (Exception e) {
+			return false;
+
+		}
+
+	}
 }

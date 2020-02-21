@@ -26,4 +26,9 @@ public class OrderService {
 
 		return orderDao.add(orderDto);
 	}
+
+	public boolean delete(int orderId) {
+
+		return orderDao.delete(orderId);
+	}
 }
