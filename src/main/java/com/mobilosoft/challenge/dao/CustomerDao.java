@@ -1,9 +1,23 @@
 package com.mobilosoft.challenge.dao;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.mobilosoft.challenge.entity.Customer;
+import com.mobilosoft.challenge.springdata.CustomerRepository;
 
-public interface CustomerRepository extends JpaRepository<Customer, Integer> {
+@Repository
+public class CustomerDao {
+
+	@Autowired
+	private CustomerRepository customerRepository;
+
+	public List<Customer> getAll() {
+
+		List<Customer> customers = customerRepository.findAll();
+		return customers;
+	}
 
 }

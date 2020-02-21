@@ -1,9 +1,20 @@
 package com.mobilosoft.challenge.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.mobilosoft.challenge.dto.CustomerDto;
+import com.mobilosoft.challenge.dto.OrderDto;
+import com.mobilosoft.challenge.service.CustomerService;
+import com.mobilosoft.challenge.service.OrderService;
 
 @Controller
 public class MainController {
@@ -12,11 +23,31 @@ public class MainController {
 	@Value("${welcome.message}")
 	private String message;
 
+	@Autowired
+	private OrderService orderService;
+
+	@Autowired
+	private CustomerService customerService;
+
 	@GetMapping("/")
 	public String main(Model model) {
-		model.addAttribute("message", message);
 
-		return "order"; // view
+		List<OrderDto> orders = orderService.getAll();
+		model.addAttribute("orders", orders);
+
+		List<CustomerDto> customers = customerService.getAll();
+		model.addAttribute("customers", customers);
+
+		return "order";
+	}
+
+	@PostMapping("/order")
+	@ResponseBody
+	public OrderDto addOrder(@RequestBody OrderDto orderDto, Model model) {
+
+		System.out.println(orderDto);
+		return orderService.add(orderDto);
+
 	}
 
 }
