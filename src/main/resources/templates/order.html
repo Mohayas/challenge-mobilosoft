@@ -9,8 +9,7 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-	<script
-	src="js/order.js"></script>
+<script src="js/order.js"></script>
 <title>Orders</title>
 </head>
 
@@ -29,7 +28,7 @@
 					<div class="form-group">
 						<label class="col-md-4 control-label" for="textinput">Name</label>
 						<div class="col-md-4">
-							<input name="textinput" type="text" id="input-order-name"
+							<input name="textinput" type="text" id="input-order-name" required="true"
 								placeholder="command name" class="form-control input-md">
 
 						</div>
@@ -39,7 +38,7 @@
 					<div class="form-group">
 						<label class="col-md-4 control-label" for="textinput">Type</label>
 						<div class="col-md-4">
-							<input  name="textinput" type="text" id="input-order-type"
+							<input name="textinput" type="text" id="input-order-type" required="true"
 								placeholder="command type" class="form-control input-md">
 
 						</div>
@@ -49,24 +48,30 @@
 						<label class="col-md-4 control-label" for="selectcustomer">
 							customer</label>
 						<div class="col-md-4">
-							<select name="selectcustomer" class="form-control" id="select-customer">
-							<option>Select customer</option>
-								<option th:each="customer: ${customers}" th:value="${customer.id}"
+							<select name="selectcustomer" class="form-control"
+								id="select-customer">
+								<option>Select customer</option>
+								<option th:each="customer: ${customers}"
+									th:value="${customer.id}"
 									th:text="|${customer.lastName} ${customer.firstName}|"></option>
 							</select>
 						</div>
 					</div>
 
 
-					<!-- Button -->
-					<div class="form-group">
-						<label class="col-md-4 control-label" for="singlebutton">
-						</label>
-						<div class="col-md-4">
-							<button id="add-order-btn" name="add-order-btn"
-								class="btn btn-primary">Add</button>
-						</div>
+					<!-- Buttons -->
+					<div  class=" col-md-4"></div>
+					<div  class=" col-md-4">
+						<button id="add-order-btn" name="add-order-btn"
+							class="btn btn-primary">Add</button>
+
+						<button id="update-order-btn" name="upadte-order-btn"
+							class="btn btn-success"  style="display: none;">Update</button>
+							
+						<button id="cancel-update-order-btn" name="add-order-btn"
+							class="btn btn-warning" style="display: none;">Cancel</button>
 					</div>
+					<input  type="hidden" id="hidden-order-id" />
 				</fieldset>
 			</form>
 		</div>
@@ -75,7 +80,7 @@
 		<h4>All orders</h4>
 		</p>
 
-		<table class="table table-striped table-sm" >
+		<table class="table table-striped table-sm">
 			<thead>
 				<tr>
 					<th>Id</th>
@@ -91,8 +96,12 @@
 					<td th:text="${order.name}" />
 					<td th:text="${order.type}" />
 					<td>
-						<button type="button" class="btn btn-link update-btn" th:attr ="to-update-id=${order.id}" >Update</button>
-						<button type="button" class="btn btn-link delete-btn" th:attr ="to-delete-id=${order.id}">Delete</button>
+						<button type="button" class="btn btn-link update-btn"
+							th:attr="to-update-id=${order.id}">Update</button>
+						<button type="button" class="btn btn-link delete-btn"
+							th:attr="to-delete-id=${order.id}">
+							<span class="text-danger">Delete</span>
+						</button>
 					</td>
 				</tr>
 			</tbody>

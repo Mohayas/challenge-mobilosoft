@@ -29,11 +29,26 @@ public class OrderDao {
 		return orderDtos;
 	}
 
+	public OrderDto getOne(int orderId) {
+
+		Order order = orderRepository.getOne(orderId);
+		OrderDto orderDto = mapper.asOrderDto(order);
+		return orderDto;
+	}
+
 	public OrderDto add(OrderDto orderDto) {
 
 		Order order = new Order();
 		order = mapper.asOrder(orderDto, order);
-		order = orderRepository.save(order);
+		order = orderRepository.saveAndFlush(order);
+		return mapper.asOrderDto(order);
+	}
+
+	public OrderDto update(OrderDto orderDto) {
+
+		Order order = new Order();
+		order = mapper.asOrder(orderDto, order);
+		order = orderRepository.saveAndFlush(order);
 		return mapper.asOrderDto(order);
 	}
 

@@ -22,9 +22,19 @@ public class OrderService {
 		return orderDao.getAll();
 	}
 
+	public OrderDto getOne(int orderId) {
+
+		return orderDao.getOne(orderId);
+	}
+
 	public OrderDto add(OrderDto orderDto) {
 
 		return orderDao.add(orderDto);
+	}
+
+	public OrderDto update(OrderDto orderDto) {
+
+		return orderDao.update(orderDto);
 	}
 
 	public boolean delete(int orderId) {
