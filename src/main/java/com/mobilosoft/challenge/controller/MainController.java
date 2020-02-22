@@ -77,8 +77,8 @@ public class MainController {
 	public boolean delete(@PathVariable(name = "orderId") int orderId) {
 
 		System.out.println("order to delete : " + orderId);
-		return true;
-		// return orderService.delete(orderId);
+
+		return orderService.delete(orderId);
 
 	}
 

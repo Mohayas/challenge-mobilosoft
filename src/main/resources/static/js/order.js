@@ -1,4 +1,11 @@
-
+function resetUpdateFormFunc(){
+	$("#update-order-btn").hide();
+	$("#cancel-update-order-btn").hide();
+	$("#add-order-btn").show();
+	$("#input-order-name").val("");
+	$("#input-order-type").val("");
+	$("#select-customer option:first").attr('selected',true);
+}
 var Orders = function() {
 
 	var addNewOrder = function() {
@@ -36,6 +43,7 @@ var Orders = function() {
 												jqXHR) {
 
 											console.log(data);
+											
 											var tr = "<tr>"
 													+ "<td>"
 													+ data.id
@@ -47,10 +55,13 @@ var Orders = function() {
 													+ data.type
 													+ "</td></td>"
 													+ "<td>"
-													+ "<button type='button' class='btn btn-link'>Update</button>"
-													+ "<button type='button' class='btn btn-link'>Delete</button></td>";
+													+ "<button type='button' to-update-id='"+data.id+"' class='btn btn-link update-btn'>Update</button>"
+													+ "<button type='button' to-delete-id='"+data.id+"' class='btn btn-link delete-btn'>" +
+															"<span class='text-danger'>Delete</span></button></td>";
 
 											$('#orders-tbody').append(tr);
+											
+											resetUpdateFormFunc();
 
 										},
 										error : function(jqXHR, textStatus,
@@ -72,36 +83,9 @@ var Orders = function() {
 						});
 
 	};
-	var updateOrder = function() {
-		$(".update-btn").on("click", function() {
-
-			var orderId = $(this).attr("to-update-id");
-
-			console.log(orderId);
-			var succes = false;
-			$.ajax({
-				url : "/order/" + orderId,
-				type : "PUT",
-				async : false,
-				crossDomain : true,
-				contentType : "application/json; charset=utf-8",
-				dataType : "json",
-				success : function(data, textStatus, jqXHR) {
-					console.log(data);
-
-					succes = true;
-
-				},
-				error : function(jqXHR, textStatus, errorThrown) {
-					console.log(errorThrown);
-				}
-
-			});
-
-		});
-	};
+	
 	var fillUpdateOrderForm = function() {
-		$(".update-btn").on("click", function() {
+		$(document.body).on("click",".update-btn", function() {
 
 			var orderId = $(this).attr("to-update-id");
 
@@ -128,7 +112,7 @@ var Orders = function() {
 
 					$("#update-order-btn").show();
 					$("#cancel-update-order-btn").show();
-					$("#add-order-btn").hide();
+					$("#add-order-btn").hide();					
 
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
@@ -137,19 +121,16 @@ var Orders = function() {
 			});
 		});
 	};
-	var resetUpdateForm = function() {
+	var resetUpdateFormListenner = function() {
 		$("#cancel-update-order-btn").on("click", function() {
-
-			$("#update-order-btn").hide();
-			$("#cancel-update-order-btn").hide();
-			$("#add-order-btn").show();
-			$("#input-order-name").val("");
-			$("#input-order-type").val("");
-			$("#select-customer option:first").attr('selected',true);
+				
+			resetUpdateFormFunc();
+			
 			return false;
 
 		});
 	};
+	
 	var updateOrder = function() {
 		$("#update-order-btn").on("click", function() {
 			
@@ -173,7 +154,7 @@ var Orders = function() {
 
 			var succes = false;
 			$.ajax({
-				url : "/order/",
+				url : "/order",
 				type : "PUT",
 				data : JSON.stringify(order),
 				async : false,
@@ -182,9 +163,7 @@ var Orders = function() {
 				dataType : "json",
 				success : function(data, textStatus, jqXHR) {
 					console.log(data);
-
-					succes = true;
-
+					resetUpdateFormFunc();
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
 					
@@ -192,14 +171,13 @@ var Orders = function() {
 						console.log(errorThrown);					
 				}
 			});
-
+			
 			return false;
 		});
 	};
 	
 	var deleteOrder = function() {
-		$(".delete-btn").on("click", function() {
-
+		$(document.body).on("click",".delete-btn", function() {
 			var orderId = $(this).attr("to-delete-id");
 
 			console.log(orderId);
@@ -243,7 +221,7 @@ var Orders = function() {
 
 			addNewOrder();
 			fillUpdateOrderForm();
-			resetUpdateForm();
+			resetUpdateFormListenner();
 			updateOrder();
 			deleteOrder();
 		}
