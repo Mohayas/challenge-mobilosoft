@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.mobilosoft.challenge.dto.CustomerDto;
 import com.mobilosoft.challenge.service.CustomerService;
 
-@Controller("")
+@Controller
 public class CustomerController {
 
 	@Autowired
@@ -63,12 +63,13 @@ public class CustomerController {
 
 	}
 
-	@DeleteMapping("/{customerId}")
+	@DeleteMapping("/customer/{customerId}")
 	@ResponseBody
 	public boolean delete(@PathVariable(name = "customerId") int customerId) {
 
 		System.out.println("customer to delete : " + customerId);
-		return customerService.delete(customerId);
+		return true;
+		// return customerService.delete(customerId);
 
 	}
 
