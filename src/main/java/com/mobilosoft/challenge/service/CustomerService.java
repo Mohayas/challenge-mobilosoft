@@ -26,4 +26,18 @@ public class CustomerService {
 		return customers;
 	}
 
+	public CustomerDto getOne(int customerId) {
+
+		return customerDao.getOne(customerId);
+	}
+
+	public CustomerDto addOrUpdate(CustomerDto customerDto) {
+
+		return customerDao.addOrUpdate(customerDto);
+	}
+
+	public boolean delete(int customerId) {
+
+		return customerDao.delete(customerId);
+	}
 }

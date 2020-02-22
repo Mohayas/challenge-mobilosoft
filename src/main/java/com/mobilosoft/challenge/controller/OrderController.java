@@ -21,7 +21,7 @@ import com.mobilosoft.challenge.service.CustomerService;
 import com.mobilosoft.challenge.service.OrderService;
 
 @Controller
-public class MainController {
+public class OrderController {
 
 	// inject via application.properties
 	@Value("${welcome.message}")
