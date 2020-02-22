@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script>document.write('<script src="js/customer.js?v=' +Date.now() + '"\><\/script>');</script>
+<title>Customers | ALL</title>
+</head>
+
+<body>
+	<div class="container">
+	
+		<p>
+		<h3>Add or Update customer</h3>
+		</p>
+	<div>
+			<form class="form-horizontal" action="#">
+				<fieldset>
+
+					<!-- Form Name -->
+					<legend>
+						<h4>Add new order</h4>
+					</legend>
+
+					<!-- Text input-->
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="textinput">Name</label>
+						<div class="col-md-4">
+							<input name="textinput" type="text" id="input-order-name" required="true"
+								placeholder="command name" class="form-control input-md">
+
+						</div>
+					</div>
+
+					<!-- Type input-->
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="textinput">Type</label>
+						<div class="col-md-4">
+							<input name="textinput" type="text" id="input-order-type" required="true"
+								placeholder="command type" class="form-control input-md">
+
+						</div>
+					</div>
+					<!-- Select Basic -->
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="selectcustomer">
+							customer</label>
+						<div class="col-md-4">
+							<select name="selectcustomer" class="form-control"
+								id="select-customer">
+								<option value="  ">Select customer</option>
+								<option th:each="customer: ${customers}"
+									th:value="${customer.id}"
+									th:text="|${customer.lastName} ${customer.firstName}|"></option>
+							</select>
+						</div>
+					</div>
+
+
+					<!-- Buttons -->
+					<div  class=" col-md-4"></div>
+					<div  class=" col-md-4">
+						<button id="add-order-btn" name="add-order-btn"
+							class="btn btn-primary">Add</button>
+
+						<button id="update-order-btn" name="upadte-order-btn"
+							class="btn btn-success"  style="display: none;">Update</button>
+							
+						<button id="cancel-update-order-btn" name="add-order-btn"
+							class="btn btn-warning" style="display: none;">Cancel</button>
+					</div>
+					<input  type="hidden" id="hidden-order-id" />
+				</fieldset>
+			</form>
+		</div>
+		
+	</div>
+
+</body>
+</html>

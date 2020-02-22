@@ -16,28 +16,33 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.mobilosoft.challenge.dto.CustomerDto;
 import com.mobilosoft.challenge.service.CustomerService;
 
-@Controller("/customer")
+@Controller("")
 public class CustomerController {
 
 	@Autowired
 	private CustomerService customerService;
 
-	@GetMapping("/all")
+	@GetMapping("/customer/all")
 	public String main(Model model) {
 
 		List<CustomerDto> customers = customerService.getAll();
 		model.addAttribute("customers", customers);
 
-		return "customer";
+		return "customers";
 	}
 
-	@GetMapping("/{oId}")
+	@GetMapping("/customer/{customerId}")
 	public String getOne(@PathVariable(name = "customerId") int customerId) {
 
 		System.out.println("customer to get : " + customerId);
 
 		CustomerDto customerDto = customerService.getOne(customerId);
-		return "customer";
+		return "add-customer";
+	}
+
+	@GetMapping("/customer/")
+	public String takeToAddCustomer() {
+		return "add-customer";
 	}
 
 	@PostMapping

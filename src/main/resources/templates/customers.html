@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script>document.write('<script src="js/customer.js?v=' +Date.now() + '"\><\/script>');</script>
+<title>Customers | ALL</title>
+</head>
+
+<body>
+	<div class="container">
+	
+		<p>
+		<h4>List of all customers</h4>
+		</p>
+
+		<table class="table table-striped table-sm" id="orders-table" >
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Full Name</th>
+					<th>PhoneNumber</th>
+					<th>Email Address</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody id="customers-tbody">
+
+				<tr th:each="customer: ${customers}" th:id="'tr-customer-id-'+${customer.id}">
+					<td th:text="${customer.id}" />
+					<td th:text="|${customer.lastName} ${customer.firstName}|" />
+					<td th:text="${customer.tel}" />
+					<td th:text="${customer.email}" />
+					<td>
+
+							<a th:href="@{~/customer/{id}(id=${customer.id})}">update2</a>
+						<button type="button" class="btn btn-link delete-btn"
+							th:attr="to-delete-id=${customer.id}">
+							<span class="text-danger">Delete</span>
+						</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+</body>
+</html>
