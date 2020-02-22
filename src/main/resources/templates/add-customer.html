@@ -9,78 +9,110 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<script>document.write('<script src="js/customer.js?v=' +Date.now() + '"\><\/script>');</script>
-<title>Customers | ALL</title>
+<script>
+	document.write('<script src="http://127.0.0.1:8080/js/customer.js?v='
+			+ Date.now() + '"\><\/script>');
+</script>
+<title>Customers | ADD</title>
 </head>
 
 <body>
 	<div class="container">
-	
-		<p>
-		<h3>Add or Update customer</h3>
-		</p>
-	<div>
-			<form class="form-horizontal" action="#">
+		<div class="alert alert-success alert-dismissible "
+			id="customer-submiteded-alert">
+			<a href="#" class="close" data-dismiss="danger" aria-label="close">&times;</a>
+			The customer has been submitted successfully!
+		</div>
+
+		<div>
+			<form class="form-horizontal" id="customer-form">
 				<fieldset>
 
 					<!-- Form Name -->
 					<legend>
-						<h4>Add new order</h4>
+						<h3>Submit customer</h3>
 					</legend>
 
-					<!-- Text input-->
+					<!-- Text input first name-->
 					<div class="form-group">
-						<label class="col-md-4 control-label" for="textinput">Name</label>
+						<label class="col-md-4 control-label" for="firstname">First
+							name</label>
 						<div class="col-md-4">
-							<input name="textinput" type="text" id="input-order-name" required="true"
-								placeholder="command name" class="form-control input-md">
+							<input name="firstName" type="text" id="input-customer-fname"
+								required="true" placeholder="First name"
+								class="form-control input-md" th:value="${customer.firstName}">
+						</div>
+					</div>
+					<!-- Text input last name-->
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="lastname">Last
+							name</label>
+						<div class="col-md-4">
+							<input name="lastName" type="text" id="input-customer-lname"
+								required placeholder="Last name"
+								class="form-control input-md" th:value="${customer.lastName}">
 
 						</div>
 					</div>
 
-					<!-- Type input-->
+					<!-- Type input tel-->
 					<div class="form-group">
-						<label class="col-md-4 control-label" for="textinput">Type</label>
+						<label class="col-md-4 control-label" for="texttel">Phone
+							number</label>
 						<div class="col-md-4">
-							<input name="textinput" type="text" id="input-order-type" required="true"
-								placeholder="command type" class="form-control input-md">
+							<input name="tel" type="text" id="input-customer-phone"
+								required placeholder="Phone number"
+								class="form-control input-md" th:value="${customer.tel}" >
+						</div>
+					</div>
+					<!-- Type input email-->
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="texttel">Email</label>
+						<div class="col-md-4">
+							<input name="email" type="email" id="input-customer-email"
+								required placeholder="Email address"
+								class="form-control input-md" th:value="${customer.email}" >
 
 						</div>
 					</div>
-					<!-- Select Basic -->
-					<div class="form-group">
-						<label class="col-md-4 control-label" for="selectcustomer">
-							customer</label>
-						<div class="col-md-4">
-							<select name="selectcustomer" class="form-control"
-								id="select-customer">
-								<option value="  ">Select customer</option>
-								<option th:each="customer: ${customers}"
-									th:value="${customer.id}"
-									th:text="|${customer.lastName} ${customer.firstName}|"></option>
-							</select>
-						</div>
-					</div>
+					<input th:value="${customer.id}" type="hidden" id="hidden-customer-id" name="customerId" />
 
 
-					<!-- Buttons -->
-					<div  class=" col-md-4"></div>
-					<div  class=" col-md-4">
-						<button id="add-order-btn" name="add-order-btn"
-							class="btn btn-primary">Add</button>
-
-						<button id="update-order-btn" name="upadte-order-btn"
-							class="btn btn-success"  style="display: none;">Update</button>
-							
-						<button id="cancel-update-order-btn" name="add-order-btn"
-							class="btn btn-warning" style="display: none;">Cancel</button>
-					</div>
-					<input  type="hidden" id="hidden-order-id" />
 				</fieldset>
 			</form>
-		</div>
-		
-	</div>
+			<!-- Buttons -->
+			<div class=" col-md-4"></div>
+			<div class=" col-md-4">
+				<button class="btn btn-primary" data-toggle="modal"
+					data-target="#submitCustomerConfirmation">Submit</button>
 
+				<button id="cancel-submit-customer-btn" class="btn btn-warning">Cancel</button>
+			</div>
+		</div>
+
+	</div>
+	<!-- Modal Submit Form Confirmation-->
+	<div class="modal fade" id="submitCustomerConfirmation" tabindex="-1"
+		role="dialog" aria-labelledby="customerModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="customerModalLabel">Woohoo</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">You're about to submit this
+					modifications, are you sure ?</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Cancel</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal"
+						id="confirm-submit-btn">Submit</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

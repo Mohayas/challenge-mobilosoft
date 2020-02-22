@@ -1,12 +1,11 @@
-//render the row html func
-function renderTableRow(order) {
-
-	
-}
 
 // reset update order form
 function resetUpdateFormFunc() {
-	
+	 $("#hidden-customer-id").val("");
+	 $("#input-customer-fname").val("");
+	 $("#input-customer-lname").val("");
+	 $("#input-customer-phone").val("");
+	 $("#input-customer-email").val("");	
 }
 
 // check if a string is empty
@@ -19,10 +18,11 @@ var Customers = function() {
 	var hideAlerts = function() {
 		$(document).ready(function(event) {
 			$("#customer-deleted-alert").hide();
+			$("#customer-submiteded-alert").hide();
 			console.log("ready");
 		});
 	};
-	var settoDeletecustomerId = function() {
+	var setToDeleteCustomerId = function() {
 		$(".delete-customer-btn").mouseover(function() {
 			var customerId = $(this).attr("to-delete-id");
 			$("#to-delete-customer-id-hidden").val(customerId);
@@ -30,7 +30,63 @@ var Customers = function() {
 			
 		});
 	};
+	var submitForm = function() {
+		$("#customer-form").submit(function() {
+			
+			alert("in sumit event");
+			console.log("submit customer clicked");
+			// getting the data from form and building the order object
+			var customerId = $("#hidden-customer-id").val();
+			var fname = $("#input-customer-fname").val();
+			var lname = $("#input-customer-lname").val();
+			var phone = $("#input-customer-phone").val();
+			var email = $("#input-customer-email").val();
 	
+			//verifying the data nullability
+			if (isEmpty(fname.trim()) | isEmpty(lname.trim())
+					| isEmpty(phone.trim()) | isEmpty(email.trim())) {
+				alert("All fields are required! ");
+				return false;
+			}
+			var customer = {
+				"id" : customerId,
+				"firstName" : fname,
+				"lastName" : lname,
+				"email" : email,
+				"tel" : phone
+			};
+			console.log(customer);
+			
+			//calling the server to add submit customer
+			$.ajax({
+				url : "/customer",
+				data : JSON.stringify(customer),
+				type : "POST",
+				crossDomain : true,
+				contentType : "application/json; charset=utf-8",
+				dataType : "json",
+				success : function(data, textStatus, jqXHR) {
+
+					console.log(data);
+					// reset the form
+					resetUpdateFormFunc();
+					//show add order notification and hide it after 5 seconds via setTimeout
+					$("#customer-submiteded-alert").show();
+					setTimeout(function() {
+						$("#customer-submiteded-alert").fadeOut(3000);
+					}, 5000);
+
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					
+						console.log('ajax error');
+						throw new Error("an unexpected error occured:"+ errorThrown);
+						console.log(errorThrown);
+						}
+			});
+			return false;
+		});
+	};
 	// delete customer function
 	var deleteCustomer = function() {
 		$("#confirm-delete-btn").on("click", function() {
@@ -70,12 +126,75 @@ var Customers = function() {
 
 		});
 	};
+	// handle submitting Customer
+	var submitCustomer = function() {
+		$("#confirm-submit-btn").on(
+				"click",
+				function() {
+
+					console.log("submit customer clicked");
+					// getting the data from form and building the order object
+					var customerId = $("#hidden-customer-id").val();
+					var fname = $("#input-customer-fname").val();
+					var lname = $("#input-customer-lname").val();
+					var phone = $("#input-customer-phone").val();
+					var email = $("#input-customer-email").val();
+			
+					//verifying the data nullability
+					if (isEmpty(fname.trim()) | isEmpty(lname.trim())
+							| isEmpty(phone.trim()) | isEmpty(email.trim())) {
+						alert("All fields are required! ");
+						return false;
+					}
+					var customer = {
+						"id" : customerId,
+						"firstName" : fname,
+						"lastName" : lname,
+						"email" : email,
+						"tel" : phone
+					};
+					console.log(customer);
+					
+					//calling the server to add submit customer
+					$.ajax({
+						url : "/customer",
+						data : JSON.stringify(customer),
+						type : "POST",
+						crossDomain : true,
+						contentType : "application/json; charset=utf-8",
+						dataType : "json",
+						success : function(data, textStatus, jqXHR) {
+
+							console.log(data);
+							// reset the form
+							resetUpdateFormFunc();
+							//show add order notification and hide it after 5 seconds via setTimeout
+							$("#customer-submiteded-alert").show();
+							setTimeout(function() {
+								$("#customer-submiteded-alert").fadeOut(3000);
+							}, 5000);
+							
+							$('#submitCustomerConfirmation').modal('toggle');
+						},
+						error : function(jqXHR, textStatus, errorThrown) {
+							
+								console.log('ajax error');
+								throw new Error("an unexpected error occured:"+ errorThrown);
+								console.log(errorThrown);
+								}
+					});
+					return false;
+				});
+
+	};
 
 	return {
 		init : function() {
 			hideAlerts();
-			settoDeletecustomerId();
+			setToDeleteCustomerId();
 			deleteCustomer();
+			submitCustomer();
+			submitForm();
 		}
 	};
 

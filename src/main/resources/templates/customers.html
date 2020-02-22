@@ -44,7 +44,7 @@
 					<td th:text="${customer.email}" />
 					<td><a th:href="@{~/customer/{id}(id=${customer.id})}">update</a>
 						<button type="button" class="btn btn-link delete-customer-btn" data-toggle="modal"
-							data-target="#deletecCustomerConfirmation"
+							data-target="#deleteCustomerConfirmation"
 							th:attr="to-delete-id=${customer.id}">
 							<span class="text-danger">Delete</span>
 						</button></td>
@@ -53,7 +53,7 @@
 		</table>
 	</div>
 	<!-- Modal Delete Confirmation-->
-	<div class="modal fade" id="deletecCustomerConfirmation" tabindex="-1"
+	<div class="modal fade" id="deleteCustomerConfirmation" tabindex="-1"
 		role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">

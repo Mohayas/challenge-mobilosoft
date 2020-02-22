@@ -28,7 +28,7 @@ public class CustomerMapper {
 		out.setFirstName(in.getFirstName());
 		out.setLastName(in.getLastName());
 		out.setEmail(in.getEmail());
-		out.setTel(in.getEmail());
+		out.setTel(in.getTel());
 
 		return out;
 
