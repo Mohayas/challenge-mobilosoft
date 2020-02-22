@@ -1,96 +1,121 @@
-function resetUpdateFormFunc(){
+//render the row html func
+function renderTableRow(order) {
+
+	var tr = "<td>" + order.id + "</td>" + "<td>" + order.name + "</td>"
+			+ "<td>" + order.type + "</td>" + "<td>"
+			+ "<button type='button' to-update-id='" + order.id
+			+ "' class='btn btn-link update-btn'>Update</button>"
+			+ "<button type='button' to-delete-id='" + order.id
+			+ "' class='btn btn-link delete-btn'>"
+			+ "<span class='text-danger'>Delete</span></button></td>";
+	return tr;
+}
+
+// reset update order form
+function resetUpdateFormFunc() {
 	$("#update-order-btn").hide();
 	$("#cancel-update-order-btn").hide();
 	$("#add-order-btn").show();
 	$("#input-order-name").val("");
 	$("#input-order-type").val("");
-	$("#select-customer option:first").attr('selected',true);
+	$("#select-customer option:first").attr('selected');
 }
+
+// check if a string is empty
+function isEmpty(str) {
+	return (!str || 0 === str.length);
+}
+// handle the orders
 var Orders = function() {
 
+	var hideAlerts = function() {
+		$(document).ready(function(event) {
+
+			$("#order-deleted-alert").hide();
+			$("#order-updated-alert").hide();
+			$("#order-added-alert").hide();
+			console.log("ready");
+
+		});
+	};
+// handle adding new order
 	var addNewOrder = function() {
-		$("#add-order-btn")
-				.on(
-						"click",
-						function() {
+		$("#add-order-btn").on(
+				"click",
+				function() {
 
-							console.log("clicked");
+					console.log("clicked");
+					// getting the data from form and building the order object
+					var orderName = $("#input-order-name").val();
+					var orderType = $("#input-order-type").val();
+					var orderCustomerId = $("#select-customer").val();
+					if (orderName)
 
-							var orderName = $("#input-order-name").val();
-							var orderType = $("#input-order-type").val();
-							var orderCustomerId = $("#select-customer").val();
+						var customer = {
+							"id" : orderCustomerId
+						};
+					console.log(customer);
+					
+					//verifying the data nullability
+					if (isEmpty(orderName.trim()) | isEmpty(orderType.trim())
+							| isEmpty(orderCustomerId.trim())) {
+						alert("empty ");
+						return false;
+					}
+					var order = {
 
-							var customer = {
-								"id" : orderCustomerId
-							};
-							console.log(customer);
-							var order = {
+						"name" : orderName,
+						"type" : orderType,
+						"customer" : customer
+					};
+					console.log(order);
+					
+					//calling the server to add new order
+					$.ajax({
+						url : "/order",
+						data : JSON.stringify(order),
+						type : "POST",
+						crossDomain : true,
+						contentType : "application/json; charset=utf-8",
+						dataType : "json",
+						success : function(data, textStatus, jqXHR) {
 
-								"name" : orderName,
-								"type" : orderType,
-								"customer" : customer
-							};
-							console.log(order);
+							console.log(data);
+							// rendring the table row and appending it to the orders table
+							var tr = renderTableRow(data);
 
-							$.ajax({
-										url : "/order",
-										data : JSON.stringify(order),
-										type : "POST",
-										crossDomain : true,
-										contentType : "application/json; charset=utf-8",
-										dataType : "json",
-										success : function(data, textStatus,
-												jqXHR) {
+							$('#orders-tbody').append(
+									"<tr id=tr-order-id-" + data.id + ">" + tr
+											+ "</tr>");
+							// reset the form
+							resetUpdateFormFunc();
+							//show add order notification and hide it after 5 seconds via setTimeout
+							$("#order-added-alert").show();
+							setTimeout(function() {
+								$("#order-added-alert").fadeOut(3000);
+							}, 5000);
 
-											console.log(data);
-											
-											var tr = "<tr>"
-													+ "<td>"
-													+ data.id
-													+ "</td>"
-													+ "<td>"
-													+ data.name
-													+ "</td>"
-													+ "<td>"
-													+ data.type
-													+ "</td></td>"
-													+ "<td>"
-													+ "<button type='button' to-update-id='"+data.id+"' class='btn btn-link update-btn'>Update</button>"
-													+ "<button type='button' to-delete-id='"+data.id+"' class='btn btn-link delete-btn'>" +
-															"<span class='text-danger'>Delete</span></button></td>";
-
-											$('#orders-tbody').append(tr);
-											
-											resetUpdateFormFunc();
-
-										},
-										error : function(jqXHR, textStatus,
-												errorThrown) {
-											if (jqXHR.status === 401
-													|| jqXHR.status === 403) {
-												console.log('ajax error');
-												alert(4);
-											} else {
-												throw new Error(
-														"an unexpected error occured:"
-																+ errorThrown);
-												console.log(errorThrown);
-												alert(5);
-											}
-										}
-									});
-							return false;
-						});
+						},
+						error : function(jqXHR, textStatus, errorThrown) {
+							
+								console.log('ajax error');
+								throw new Error("an unexpected error occured:"+ errorThrown);
+								console.log(errorThrown);
+}
+					});
+					return false;
+				});
 
 	};
-	
+
+	// fill update form with the order data
 	var fillUpdateOrderForm = function() {
-		$(document.body).on("click",".update-btn", function() {
+		$(document.body).on("click", ".update-btn", function() {
 
 			var orderId = $(this).attr("to-update-id");
 
 			console.log(orderId);
-
+			// getting all order data from the server
 			$.ajax({
 				url : "/order/" + orderId,
 				type : "GET",
@@ -101,6 +126,7 @@ var Orders = function() {
 				success : function(data, textStatus, jqXHR) {
 
 					console.log(data);
+					//just filling the form with data coming from server
 					$("#input-order-name").val(data.name);
 					$("#input-order-type").val(data.type);
 					$("#hidden-order-id").val(data.id);
@@ -109,10 +135,11 @@ var Orders = function() {
 							$(this).prop("selected", true);
 						}
 					});
-
+					
+					// show update and cancel buttons,  and hide add button
 					$("#update-order-btn").show();
 					$("#cancel-update-order-btn").show();
-					$("#add-order-btn").hide();					
+					$("#add-order-btn").hide();
 
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
@@ -121,20 +148,20 @@ var Orders = function() {
 			});
 		});
 	};
+	// reset add/update form function
 	var resetUpdateFormListenner = function() {
 		$("#cancel-update-order-btn").on("click", function() {
-				
 			resetUpdateFormFunc();
-			
 			return false;
-
 		});
 	};
-	
+// handle the update order event
 	var updateOrder = function() {
 		$("#update-order-btn").on("click", function() {
-			
-			var orderId = 	$("#hidden-order-id").val();;			
+
+			//building the order object
+			var orderId = $("#hidden-order-id").val();
+
 			var orderName = $("#input-order-name").val();
 			var orderType = $("#input-order-type").val();
 			var orderCustomerId = $("#select-customer").val();
@@ -142,46 +169,57 @@ var Orders = function() {
 			var customer = {
 				"id" : orderCustomerId
 			};
-				
-			var order = {	
+
+			var order = {
 				"id" : orderId,
 				"name" : orderName,
 				"type" : orderType,
 				"customer" : customer
 			};
-			
+
 			console.log(order);
 
-			var succes = false;
+			//calling the server to update order
 			$.ajax({
 				url : "/order",
 				type : "PUT",
 				data : JSON.stringify(order),
-				async : false,
 				crossDomain : true,
 				contentType : "application/json; charset=utf-8",
 				dataType : "json",
 				success : function(data, textStatus, jqXHR) {
 					console.log(data);
+					// reset add/update form
 					resetUpdateFormFunc();
+					//show update notification
+					$("#order-updated-alert").show();
+					//hide update notification after 5 seconds
+					setTimeout(function() {
+						$("#order-updated-alert").fadeOut(3000);
+					}, 5000);
+					//render the new  table row with updated order data
+					var tr = renderTableRow(order);
+					//replace the old row with the new updated row 
+					$("#tr-order-id-" + orderId).html(tr);
+
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
-					
-						console.log('ajax error');				
-						console.log(errorThrown);					
+
+					console.log('ajax error');
+					console.log(errorThrown);
 				}
 			});
-			
 			return false;
 		});
 	};
-	
+	// delete order function
 	var deleteOrder = function() {
-		$(document.body).on("click",".delete-btn", function() {
+		$(document.body).on("click", ".delete-btn", function() {
+			
 			var orderId = $(this).attr("to-delete-id");
 
 			console.log(orderId);
-			var succes = false;
+
 			$.ajax({
 				url : "/order/" + orderId,
 				type : "DELETE",
@@ -190,35 +228,34 @@ var Orders = function() {
 				contentType : "application/json; charset=utf-8",
 				dataType : "json",
 				success : function(data, textStatus, jqXHR) {
+
 					console.log(data);
 
-					succes = true;
+					// show delete notificatio
+					$("#order-deleted-alert").show();
+					// delete order row from tble
+					$("#tr-order-id-" + orderId).fadeOut(2000);
+					// hide delete notification
+					setTimeout(function() {
+						$("#order-deleted-alert").fadeOut(3000);
+					}, 5000);
+					// reset add/update form
+					resetUpdateFormFunc();
+					console.log("deleted successfully");
 
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
-					if (jqXHR.status === 401 || jqXHR.status === 403) {
-						console.log('ajax error');
-						$('#auth-error-box').show();
-					} else {
-						// throw new Error("an unexpected error occured:
-						// " +
-						// errorThrown);
-						console.log(errorThrown);
-					}
+					console.log('ajax error');
+					console.log(errorThrown);
 				}
 			});
 
-			if (succes === true) {
-
-				$(this).closest("tr").fadeOut(3000);
-			}
-			console.log(succes);
 		});
 	};
 
 	return {
 		init : function() {
-
+			hideAlerts();
 			addNewOrder();
 			fillUpdateOrderForm();
 			resetUpdateFormListenner();

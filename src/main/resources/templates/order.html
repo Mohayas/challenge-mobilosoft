@@ -9,12 +9,26 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<script src="js/order.js"></script>
+<script>document.write('<script src="js/order.js?v=' +Date.now() + '"\><\/script>');</script>
 <title>Orders</title>
 </head>
 
 <body>
 	<div class="container">
+	<div>
+	<div class="alert alert-success alert-dismissible" id="order-added-alert" >
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    The order has been added successfully!
+  </div>
+  <div class="alert alert-info alert-dismissible" id="order-updated-alert" >
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    The order has been updated successfully!
+  </div>
+  <div class="alert alert-danger alert-dismissible " id="order-deleted-alert">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+     The order has been delete successfully!
+  </div>
+	</div>
 		<div>
 			<form class="form-horizontal" action="#">
 				<fieldset>
@@ -50,7 +64,7 @@
 						<div class="col-md-4">
 							<select name="selectcustomer" class="form-control"
 								id="select-customer">
-								<option>Select customer</option>
+								<option value="  ">Select customer</option>
 								<option th:each="customer: ${customers}"
 									th:value="${customer.id}"
 									th:text="|${customer.lastName} ${customer.firstName}|"></option>
@@ -91,7 +105,7 @@
 			</thead>
 			<tbody id="orders-tbody">
 
-				<tr th:each="order: ${orders}">
+				<tr th:each="order: ${orders}" th:id="'tr-order-id-'+${order.id}">
 					<td th:text="${order.id}" />
 					<td th:text="${order.name}" />
 					<td th:text="${order.type}" />

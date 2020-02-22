@@ -1,5 +1,6 @@
 package com.mobilosoft.challenge.controller;
 
+import java.time.Instant;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,7 @@ public class MainController {
 		List<CustomerDto> customers = customerService.getAll();
 		model.addAttribute("customers", customers);
 
+		model.addAttribute("now", Instant.now().getEpochSecond());
 		return "order";
 	}
 
