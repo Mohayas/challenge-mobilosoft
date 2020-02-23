@@ -35,7 +35,7 @@ public class CustomerController {
 
 		System.out.println("customer to get : " + customerId);
 
-		CustomerDto customerDto = customerService.getOne(customerId);
+		CustomerDto customerDto = customerService.findById(customerId);
 		model.addAttribute("customer", customerDto);
 
 		return "add-customer";

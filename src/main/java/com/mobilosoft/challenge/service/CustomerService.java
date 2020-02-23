@@ -1,6 +1,7 @@
 package com.mobilosoft.challenge.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +28,11 @@ public class CustomerService {
 		return customers;
 	}
 
-	public CustomerDto getOne(int customerId) {
-		Customer customer = customerDao.getOne(customerId);
-		CustomerDto customerDto = mapper.asCustomerDto(customer);
+	public CustomerDto findById(int customerId) {
+		Optional<Customer> customer = customerDao.findById(customerId);
+		if (!customer.isPresent())
+			return null;
+		CustomerDto customerDto = mapper.asCustomerDto(customer.get());
 		return customerDto;
 	}
 

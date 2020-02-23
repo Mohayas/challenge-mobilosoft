@@ -3,25 +3,32 @@ package com.mobilosoft.challenge;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mobilosoft.challenge.dao.CustomerDao;
 import com.mobilosoft.challenge.entity.Customer;
 
 @SpringBootTest
-// @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
+@Transactional
+@TestMethodOrder(OrderAnnotation.class)
 public class CustomerDaoTests {
 
 	@Autowired
 	CustomerDao customerDao;
 	@Value("${welcome.message}")
 	private String welcome;
-	private static int insrtedCustomerId;
+	private static int insertedCustomerId;
 
 	private Customer initCustomer() {
 		Customer customer = new Customer();
@@ -34,27 +41,27 @@ public class CustomerDaoTests {
 	}
 
 	@Test
+	@Order(1)
+	@Rollback(false)
 	public void addOrUpadte() {
 
 		Customer customer = initCustomer();
 		customer = customerDao.addOrUpdate(customer);
-		insrtedCustomerId = customer.getId();
+		insertedCustomerId = customer.getId();
 		Assertions.assertNotEquals(customer.getId(), 0);
 	}
 
 	@Test
-	public void getOne() {
-		try {
+	@Order(2)
+	public void findById() {
 
-			Customer customer = customerDao.getOne(insrtedCustomerId);
-			Assertions.assertNotNull(customer);
+		Optional<Customer> customer = customerDao.findById(insertedCustomerId);
+		Assertions.assertEquals(true, customer.isPresent());
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Test
+	@Order(3)
 	public void getAll() {
 
 		Customer customer = initCustomer();
@@ -64,19 +71,16 @@ public class CustomerDaoTests {
 		int size = customersFromDb.size();
 
 		Assertions.assertNotEquals(size, 0);
-
 	}
 
 	@Test
+	@Order(4)
+	@Rollback(false)
 	public void delete() {
 
-		customerDao.delete(insrtedCustomerId);
-
-		List<Customer> customersFromDb = customerDao.getAll();
-		int size = customersFromDb.size();
-
-		Assertions.assertEquals(size, 0);
-
+		customerDao.delete(insertedCustomerId);
+		Optional<Customer> customer = customerDao.findById(insertedCustomerId);
+		Assertions.assertEquals(false, customer.isPresent());
 	}
 
 	@Test

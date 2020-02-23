@@ -1,6 +1,7 @@
 package com.mobilosoft.challenge.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -20,12 +21,10 @@ public class CustomerDao {
 		return customers;
 	}
 
-	public Customer getOne(int customerId) {
+	public Optional<Customer> findById(int customerId) {
 
-		Customer customer = customerRepository.getOne(customerId);
-
+		Optional<Customer> customer = customerRepository.findById(customerId);
 		return customer;
-
 	}
 
 	public Customer addOrUpdate(Customer customer) {

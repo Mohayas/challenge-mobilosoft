@@ -1,6 +1,7 @@
 package com.mobilosoft.challenge.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -29,9 +30,11 @@ public class OrderService {
 		return orderDtos;
 	}
 
-	public OrderDto getOne(int orderId) {
-		Order order = orderDao.getOne(orderId);
-		OrderDto orderDto = mapper.asOrderDto(order);
+	public OrderDto findById(int orderId) {
+		Optional<Order> order = orderDao.findById(orderId);
+		if (!order.isPresent())
+			return null;
+		OrderDto orderDto = mapper.asOrderDto(order.get());
 		return orderDto;
 	}
 

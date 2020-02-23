@@ -1,6 +1,7 @@
 package com.mobilosoft.challenge.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -20,14 +21,15 @@ public class OrderDao {
 		return orders;
 	}
 
-	public Order getOne(int orderId) {
+	public Optional<Order> findById(int orderId) {
 
-		Order order = orderRepository.getOne(orderId);
+		Optional<Order> order = orderRepository.findById(orderId);
 		return order;
+
 	}
 
 	public Order addOrUpdate(Order order) {
-		order = orderRepository.saveAndFlush(order);
+		order = orderRepository.save(order);
 		return order;
 	}
 

@@ -2,7 +2,9 @@ package com.mobilosoft.challenge.entity;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,7 +32,7 @@ public class Order implements Serializable {
 	private String type;
 
 	// bi-directional many-to-one association to Customer
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "costumer_id")
 	private Customer customer;
 

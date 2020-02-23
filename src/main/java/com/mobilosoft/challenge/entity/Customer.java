@@ -3,8 +3,10 @@ package com.mobilosoft.challenge.entity;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,7 +39,7 @@ public class Customer implements Serializable {
 	private String tel;
 
 	// bi-directional many-to-one association to Order
-	@OneToMany(mappedBy = "customer")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.LAZY)
 	private List<Order> orders;
 
 	public Customer() {

@@ -52,7 +52,7 @@ public class OrderController {
 
 		System.out.println("order to get : " + orderId);
 
-		return orderService.getOne(orderId);
+		return orderService.findById(orderId);
 
 	}
 
