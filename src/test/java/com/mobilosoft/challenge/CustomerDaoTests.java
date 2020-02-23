@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,27 +22,68 @@ public class CustomerDaoTests {
 	CustomerDao customerDao;
 	@Value("${welcome.message}")
 	private String welcome;
+	private static int insrtedCustomerId;
+
+	private CustomerDto initCustomer() {
+		CustomerDto customer = new CustomerDto();
+		customer.setEmail("firstemai@junittest.com");
+
+		customer.setTel("09111111111");
+		customer.setFirstName("test");
+		customer.setLastName("junit");
+		return customer;
+	}
 
 	@Test
-	public void testSave() {
-		CustomerDto customer = new CustomerDto();
-		customer.setEmail("emaaail");
+	public void addOrUpadte() {
 
-		customer.setTel("0998888888");
-		customer.setFirstName("mooooha");
-		customer.setLastName("laste naaaaame");
-		customerDao.addOrUpdate(customer);
+		CustomerDto customer = initCustomer();
+		customer = customerDao.addOrUpdate(customer);
+		insrtedCustomerId = customer.getId();
+		Assertions.assertNotEquals(customer.getId(), 0);
+	}
+
+	@Test
+	public void getOne() {
+		try {
+
+			CustomerDto customer = customerDao.getOne(insrtedCustomerId);
+			Assertions.assertNotNull(customer);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void getAll() {
+
+		CustomerDto customer = initCustomer();
+		customer = customerDao.addOrUpdate(customer);
 
 		List<Customer> customersFromDb = customerDao.getAll();
-		int size = Integer.valueOf(customersFromDb.size());
-		assertEquals(size, 12);
+		int size = customersFromDb.size();
+
+		Assertions.assertNotEquals(size, 0);
+
+	}
+
+	@Test
+	public void delete() {
+
+		customerDao.delete(insrtedCustomerId);
+
+		List<Customer> customersFromDb = customerDao.getAll();
+		int size = customersFromDb.size();
+
+		Assertions.assertEquals(size, 0);
 
 	}
 
 	@Test
 	public void testConfigFile() {
 
-		assertEquals(welcome, "Buddy");
+		assertEquals(welcome, "Buddytest");
 
 	}
 
@@ -51,4 +93,5 @@ public class CustomerDaoTests {
 		assertEquals(1, 1);
 
 	}
+
 }
