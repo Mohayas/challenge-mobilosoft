@@ -12,6 +12,11 @@ function resetUpdateFormFunc() {
 function isEmpty(str) {
 	return (!str || 0 === str.length);
 }
+//validate email
+function isValidEmail(email) {
+    var pattern = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
+    return pattern.test(email);
+}
 // handle the Customers
 var Customers = function() {
 
@@ -30,63 +35,7 @@ var Customers = function() {
 			
 		});
 	};
-	var submitForm = function() {
-		$("#customer-form").submit(function() {
-			
-			alert("in sumit event");
-			console.log("submit customer clicked");
-			// getting the data from form and building the order object
-			var customerId = $("#hidden-customer-id").val();
-			var fname = $("#input-customer-fname").val();
-			var lname = $("#input-customer-lname").val();
-			var phone = $("#input-customer-phone").val();
-			var email = $("#input-customer-email").val();
 	
-			//verifying the data nullability
-			if (isEmpty(fname.trim()) | isEmpty(lname.trim())
-					| isEmpty(phone.trim()) | isEmpty(email.trim())) {
-				alert("All fields are required! ");
-				return false;
-			}
-			var customer = {
-				"id" : customerId,
-				"firstName" : fname,
-				"lastName" : lname,
-				"email" : email,
-				"tel" : phone
-			};
-			console.log(customer);
-			
-			//calling the server to add submit customer
-			$.ajax({
-				url : "/customer",
-				data : JSON.stringify(customer),
-				type : "POST",
-				crossDomain : true,
-				contentType : "application/json; charset=utf-8",
-				dataType : "json",
-				success : function(data, textStatus, jqXHR) {
-
-					console.log(data);
-					// reset the form
-					resetUpdateFormFunc();
-					//show add order notification and hide it after 5 seconds via setTimeout
-					$("#customer-submiteded-alert").show();
-					setTimeout(function() {
-						$("#customer-submiteded-alert").fadeOut(3000);
-					}, 5000);
-
-				},
-				error : function(jqXHR, textStatus, errorThrown) {
-					
-						console.log('ajax error');
-						throw new Error("an unexpected error occured:"+ errorThrown);
-						console.log(errorThrown);
-						}
-			});
-			return false;
-		});
-	};
 	// delete customer function
 	var deleteCustomer = function() {
 		$("#confirm-delete-btn").on("click", function() {
@@ -124,6 +73,7 @@ var Customers = function() {
 					if(data==3){
 						alert("in 3 ");
 						$("#deleteCustomerWithOrdersConfirmation").modal("show");
+						
 					}
 
 				},
@@ -193,7 +143,7 @@ var Customers = function() {
 			
 					//verifying the data nullability
 					if (isEmpty(fname.trim()) | isEmpty(lname.trim())
-							| isEmpty(phone.trim()) | isEmpty(email.trim())) {
+							| isEmpty(phone.trim()) | !isValidEmail(email.trim())) {
 						alert("All fields are required! ");
 						return false;
 					}
@@ -228,7 +178,10 @@ var Customers = function() {
 							$('#submitCustomerConfirmation').modal('toggle');
 						},
 						error : function(jqXHR, textStatus, errorThrown) {
-							
+								
+							$("#submitCustomerConfirmation").modal("hide");
+							$("#modalPanelForErros").modal("show");
+							alert("500");
 								console.log('ajax error');
 								throw new Error("an unexpected error occured:"+ errorThrown);
 								console.log(errorThrown);
@@ -246,7 +199,7 @@ var Customers = function() {
 			deleteCustomer();
 			deleteCustomerWithOrders();
 			submitCustomer();
-			submitForm();
+		
 		}
 	};
 

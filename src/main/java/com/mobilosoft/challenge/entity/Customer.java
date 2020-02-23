@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 /**
  * The persistent class for the customer database table.
@@ -28,14 +30,18 @@ public class Customer implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
+	@Email(message = "An valid email is required")
 	private String email;
 
+	@NotBlank(message = "The first name is required")
 	@Column(name = "first_name")
 	private String firstName;
 
+	@NotBlank(message = "The last name is required")
 	@Column(name = "last_name")
 	private String lastName;
 
+	@NotBlank(message = "The phone number is required")
 	private String tel;
 
 	// bi-directional many-to-one association to Order

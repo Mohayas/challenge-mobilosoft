@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 /**
  * The persistent class for the order database table.
@@ -27,8 +28,9 @@ public class Order implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
+	@NotBlank(message = "Order Name cannot be null")
 	private String name;
-
+	@NotBlank(message = "Order type cannot be null")
 	private String type;
 
 	// bi-directional many-to-one association to Customer

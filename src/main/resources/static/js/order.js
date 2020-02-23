@@ -18,7 +18,7 @@ function resetUpdateFormFunc() {
 	$("#add-order-btn").show();
 	$("#input-order-name").val("");
 	$("#input-order-type").val("");
-	$("#select-customer option:first").attr('selected');
+	//$("#select-customer option:first").attr('selected');
 }
 
 // check if a string is empty
@@ -50,7 +50,7 @@ var Orders = function() {
 	};
 // handle adding new order
 	var addNewOrder = function() {
-		$("#add-order-btn").on(
+				$("#add-order-btn").on(
 				"click",
 				function() {
 
@@ -65,13 +65,14 @@ var Orders = function() {
 							"id" : orderCustomerId
 						};
 					console.log(customer);
-					
-					//verifying the data nullability
-					if (isEmpty(orderName.trim()) | isEmpty(orderType.trim())
+						alert(customer.id);
+					//verifying the user's input
+				/*	if (isEmpty(orderName.trim()) | isEmpty(orderType.trim())
 							| isEmpty(orderCustomerId.trim())) {
 						alert("empty ");
 						return false;
 					}
+					*/
 					var order = {
 
 						"name" : orderName,
@@ -111,6 +112,7 @@ var Orders = function() {
 								console.log('ajax error');
 								throw new Error("an unexpected error occured:"+ errorThrown);
 								console.log(errorThrown);
+								$("#modalPanelForErros").modal("show");
 }
 					});
 					return false;
@@ -179,7 +181,7 @@ var Orders = function() {
 			var customer = {
 				"id" : orderCustomerId
 			};
-
+			
 			var order = {
 				"id" : orderId,
 				"name" : orderName,
@@ -217,6 +219,7 @@ var Orders = function() {
 
 					console.log('ajax error');
 					console.log(errorThrown);
+					$("#modalPanelForErros").modal("show");
 				}
 			});
 			return false;
