@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.mobilosoft.challenge.dao.CustomerDao;
 import com.mobilosoft.challenge.dto.CustomerDto;
+import com.mobilosoft.challenge.entity.Customer;
 import com.mobilosoft.challenge.mapper.CustomerMapper;
 
 @Service
@@ -27,13 +28,18 @@ public class CustomerService {
 	}
 
 	public CustomerDto getOne(int customerId) {
-
-		return customerDao.getOne(customerId);
+		Customer customer = customerDao.getOne(customerId);
+		CustomerDto customerDto = mapper.asCustomerDto(customer);
+		return customerDto;
 	}
 
 	public CustomerDto addOrUpdate(CustomerDto customerDto) {
 
-		return customerDao.addOrUpdate(customerDto);
+		Customer customer = new Customer();
+		customer = mapper.asCustomer(customerDto, customer);
+		customer = customerDao.addOrUpdate(customer);
+		customerDto = mapper.asCustomerDto(customer);
+		return customerDto;
 	}
 
 	public boolean delete(int customerId) {

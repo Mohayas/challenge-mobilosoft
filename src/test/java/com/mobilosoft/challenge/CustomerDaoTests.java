@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.mobilosoft.challenge.dao.CustomerDao;
-import com.mobilosoft.challenge.dto.CustomerDto;
 import com.mobilosoft.challenge.entity.Customer;
 
 @SpringBootTest
@@ -24,8 +23,8 @@ public class CustomerDaoTests {
 	private String welcome;
 	private static int insrtedCustomerId;
 
-	private CustomerDto initCustomer() {
-		CustomerDto customer = new CustomerDto();
+	private Customer initCustomer() {
+		Customer customer = new Customer();
 		customer.setEmail("firstemai@junittest.com");
 
 		customer.setTel("09111111111");
@@ -37,7 +36,7 @@ public class CustomerDaoTests {
 	@Test
 	public void addOrUpadte() {
 
-		CustomerDto customer = initCustomer();
+		Customer customer = initCustomer();
 		customer = customerDao.addOrUpdate(customer);
 		insrtedCustomerId = customer.getId();
 		Assertions.assertNotEquals(customer.getId(), 0);
@@ -47,7 +46,7 @@ public class CustomerDaoTests {
 	public void getOne() {
 		try {
 
-			CustomerDto customer = customerDao.getOne(insrtedCustomerId);
+			Customer customer = customerDao.getOne(insrtedCustomerId);
 			Assertions.assertNotNull(customer);
 
 		} catch (Exception e) {
@@ -58,7 +57,7 @@ public class CustomerDaoTests {
 	@Test
 	public void getAll() {
 
-		CustomerDto customer = initCustomer();
+		Customer customer = initCustomer();
 		customer = customerDao.addOrUpdate(customer);
 
 		List<Customer> customersFromDb = customerDao.getAll();

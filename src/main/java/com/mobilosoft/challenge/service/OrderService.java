@@ -1,6 +1,7 @@
 package com.mobilosoft.challenge.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import com.mobilosoft.challenge.dao.OrderDao;
 import com.mobilosoft.challenge.dto.OrderDto;
+import com.mobilosoft.challenge.entity.Order;
+import com.mobilosoft.challenge.mapper.OrderMapper;
 
 @Service
 @Transactional
@@ -17,24 +20,27 @@ public class OrderService {
 	@Autowired
 	OrderDao orderDao;
 
-	public List<OrderDto> getAll() {
+	@Autowired
+	OrderMapper mapper;
 
-		return orderDao.getAll();
+	public List<OrderDto> getAll() {
+		List<Order> orders = orderDao.getAll();
+		List<OrderDto> orderDtos = orders.stream().map(order -> mapper.asOrderDto(order)).collect(Collectors.toList());
+		return orderDtos;
 	}
 
 	public OrderDto getOne(int orderId) {
-
-		return orderDao.getOne(orderId);
+		Order order = orderDao.getOne(orderId);
+		OrderDto orderDto = mapper.asOrderDto(order);
+		return orderDto;
 	}
 
-	public OrderDto add(OrderDto orderDto) {
-
-		return orderDao.add(orderDto);
-	}
-
-	public OrderDto update(OrderDto orderDto) {
-
-		return orderDao.update(orderDto);
+	public OrderDto addOrUpdate(OrderDto orderDto) {
+		Order order = new Order();
+		order = mapper.asOrder(orderDto, order);
+		order = orderDao.addOrUpdate(order);
+		orderDto = mapper.asOrderDto(order);
+		return orderDto;
 	}
 
 	public boolean delete(int orderId) {

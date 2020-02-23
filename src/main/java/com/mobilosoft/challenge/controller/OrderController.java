@@ -61,7 +61,7 @@ public class OrderController {
 	public OrderDto addOrder(@RequestBody OrderDto orderDto) {
 
 		System.out.println(orderDto);
-		return orderService.add(orderDto);
+		return orderService.addOrUpdate(orderDto);
 
 	}
 
@@ -70,7 +70,7 @@ public class OrderController {
 	public OrderDto updateOrder(@RequestBody OrderDto orderDto) {
 
 		System.out.println(orderDto);
-		return orderService.update(orderDto);
+		return orderService.addOrUpdate(orderDto);
 
 	}
 

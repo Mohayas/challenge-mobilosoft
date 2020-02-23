@@ -1,14 +1,11 @@
 package com.mobilosoft.challenge.dao;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.mobilosoft.challenge.dto.OrderDto;
 import com.mobilosoft.challenge.entity.Order;
-import com.mobilosoft.challenge.mapper.OrderMapper;
 import com.mobilosoft.challenge.springdata.OrderRepository;
 
 @Repository
@@ -17,39 +14,21 @@ public class OrderDao {
 	@Autowired
 	OrderRepository orderRepository;
 
-	@Autowired
-	OrderMapper mapper;
-
-	public List<OrderDto> getAll() {
+	public List<Order> getAll() {
 
 		List<Order> orders = orderRepository.findAll();
-
-		List<OrderDto> orderDtos = orders.stream().map(order -> mapper.asOrderDto(order)).collect(Collectors.toList());
-
-		return orderDtos;
+		return orders;
 	}
 
-	public OrderDto getOne(int orderId) {
+	public Order getOne(int orderId) {
 
 		Order order = orderRepository.getOne(orderId);
-		OrderDto orderDto = mapper.asOrderDto(order);
-		return orderDto;
+		return order;
 	}
 
-	public OrderDto add(OrderDto orderDto) {
-
-		Order order = new Order();
-		order = mapper.asOrder(orderDto, order);
+	public Order addOrUpdate(Order order) {
 		order = orderRepository.saveAndFlush(order);
-		return mapper.asOrderDto(order);
-	}
-
-	public OrderDto update(OrderDto orderDto) {
-
-		Order order = new Order();
-		order = mapper.asOrder(orderDto, order);
-		order = orderRepository.saveAndFlush(order);
-		return mapper.asOrderDto(order);
+		return order;
 	}
 
 	public boolean delete(int orderid) {
