@@ -79,7 +79,7 @@ public class CustomerServiceTests {
 	@Order(4)
 	public void delete() {
 
-		customerService.delete(insertedCustomerId);
+		customerService.delete(insertedCustomerId, true);
 		CustomerDto customerDto = customerService.findById(insertedCustomerId);
 		Assertions.assertNull(customerDto);
 

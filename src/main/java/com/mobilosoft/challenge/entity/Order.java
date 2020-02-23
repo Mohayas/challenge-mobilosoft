@@ -32,7 +32,7 @@ public class Order implements Serializable {
 	private String type;
 
 	// bi-directional many-to-one association to Customer
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinColumn(name = "costumer_id")
 	private Customer customer;
 

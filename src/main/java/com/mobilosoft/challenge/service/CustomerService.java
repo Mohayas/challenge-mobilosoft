@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mobilosoft.challenge.common.ApiResponses;
 import com.mobilosoft.challenge.dao.CustomerDao;
 import com.mobilosoft.challenge.dto.CustomerDto;
 import com.mobilosoft.challenge.entity.Customer;
@@ -45,7 +46,16 @@ public class CustomerService {
 		return customerDto;
 	}
 
-	public boolean delete(int customerId) {
+	public int delete(int customerId, boolean forceDelete) {
+
+		Optional<Customer> customerOpt = customerDao.findById(customerId);
+
+		if (!customerOpt.isPresent())
+			return ApiResponses.DELETE_CUSTOMER_NOT_FOUD;
+
+		Customer customer = customerOpt.get();
+		if (customer.getOrders().size() > 0 && !forceDelete)
+			return ApiResponses.DELETE_CUSTOMER_HAS_ORDERS;
 
 		return customerDao.delete(customerId);
 	}

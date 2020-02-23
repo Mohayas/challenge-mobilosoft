@@ -96,14 +96,17 @@ var Customers = function() {
 			console.log(customerId);
 
 			$.ajax({
-				url : "/customer/" + customerId,
+				url : "/customer/" + customerId+"?forceDelete=false",
 				type : "DELETE",
 				async : false,
 				crossDomain : true,
 				contentType : "application/json; charset=utf-8",
 				dataType : "json",
 				success : function(data, textStatus, jqXHR) {
-
+					console.log(data)
+					// the customer's been  deleted successfully
+					if(data==2) {
+						alert("in 2 ");
 					console.log(data);
 				
 					// delete customer row from table
@@ -116,6 +119,54 @@ var Customers = function() {
 					}, 5000);
 
 					console.log("customer deleted successfully");
+					}
+					//the customer has some orders
+					if(data==3){
+						alert("in 3 ");
+						$("#deleteCustomerWithOrdersConfirmation").modal("show");
+					}
+
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					console.log('ajax error');
+					console.log(errorThrown);
+				}
+			});
+
+		});
+	};
+	// delete customer function with orders
+	var deleteCustomerWithOrders = function() {
+		$("#confirm-force-delete-btn").on("click", function() {
+			
+			var customerId = $("#to-delete-customer-id-hidden").val();
+
+			console.log(customerId);
+
+			$.ajax({
+				url : "/customer/" + customerId+"?forceDelete=true",
+				type : "DELETE",
+				async : false,
+				crossDomain : true,
+				contentType : "application/json; charset=utf-8",
+				dataType : "json",
+				success : function(data, textStatus, jqXHR) {
+					console.log(data)
+					// the customer's been  deleted successfully
+					if(data===2) {
+					console.log(data);
+				
+					// delete customer row from table
+					$("#tr-customer-id-" + customerId).fadeOut(2000);
+					// show delete notification
+					$("#customer-deleted-alert").show();
+					// hide delete notification
+					setTimeout(function() {
+						$("#customer-deleted-alert").fadeOut(3000);
+					}, 5000);
+
+					console.log("customer deleted successfully");
+					}
 
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
@@ -193,6 +244,7 @@ var Customers = function() {
 			hideAlerts();
 			setToDeleteCustomerId();
 			deleteCustomer();
+			deleteCustomerWithOrders();
 			submitCustomer();
 			submitForm();
 		}

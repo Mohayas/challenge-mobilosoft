@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.mobilosoft.challenge.common.ApiResponses;
 import com.mobilosoft.challenge.entity.Customer;
 import com.mobilosoft.challenge.springdata.CustomerRepository;
 
@@ -33,15 +34,11 @@ public class CustomerDao {
 		return customer;
 	}
 
-	public boolean delete(int customerId) {
+	public int delete(int customerId) {
 
-		try {
-			Customer customer = customerRepository.getOne(customerId);
-			customerRepository.delete(customer);
-			return true;
-		} catch (Exception e) {
-			return false;
+		Customer customer = customerRepository.getOne(customerId);
+		customerRepository.delete(customer);
+		return ApiResponses.DELETE_CUSTOMER_SUCCESS;
 
-		}
 	}
 }
