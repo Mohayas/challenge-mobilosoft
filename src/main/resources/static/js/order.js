@@ -27,7 +27,17 @@ function isEmpty(str) {
 }
 // handle the orders
 var Orders = function() {
-
+	
+	// set orderId that's gonna be delete in hidden input
+	var setToDeleteOrderId = function() {
+		$(document.body).on("click", ".tr-delete-btn",function() {
+			var orderId = $(this).attr("to-delete-id");
+			$("#hidden-order-id-to-delete").val(orderId);
+			console.log("order id :;  "+orderId);
+			alert("thr order id has been set");
+			
+		});
+	};
 	var hideAlerts = function() {
 		$(document).ready(function(event) {
 
@@ -214,9 +224,9 @@ var Orders = function() {
 	};
 	// delete order function
 	var deleteOrder = function() {
-		$(document.body).on("click", ".delete-btn", function() {
+		$("#confirm-delete-btn").click( function() {
 			
-			var orderId = $(this).attr("to-delete-id");
+			var orderId =$("#hidden-order-id-to-delete").val();
 
 			console.log(orderId);
 
@@ -261,6 +271,7 @@ var Orders = function() {
 			resetUpdateFormListenner();
 			updateOrder();
 			deleteOrder();
+			setToDeleteOrderId();
 		}
 	};
 

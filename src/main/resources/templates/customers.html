@@ -9,7 +9,10 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<script>document.write('<script src="http://127.0.0.1:8080/js/customer.js?v=' +Date.now() + '"\><\/script>');</script>
+<script>
+	document.write('<script src="http://127.0.0.1:8080/js/customer.js?v='
+			+ Date.now() + '"\><\/script>');
+</script>
 <title>Customers | ALL</title>
 </head>
 
@@ -43,8 +46,8 @@
 					<td th:text="${customer.tel}" />
 					<td th:text="${customer.email}" />
 					<td><a th:href="@{~/customer/{id}(id=${customer.id})}">update</a>
-						<button type="button" class="btn btn-link delete-customer-btn" data-toggle="modal"
-							data-target="#deleteCustomerConfirmation"
+						<button type="button" class="btn btn-link delete-customer-btn"
+							data-toggle="modal" data-target="#deleteCustomerConfirmation"
 							th:attr="to-delete-id=${customer.id}">
 							<span class="text-danger">Delete</span>
 						</button></td>
@@ -77,9 +80,10 @@
 			</div>
 		</div>
 	</div>
-		<!-- Modal Delete Confirmation if the customer has some orders-->
-	<div class="modal fade" id="deleteCustomerWithOrdersConfirmation" tabindex="-1"
-		role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<!-- Modal Delete Confirmation if the customer has some orders-->
+	<div class="modal fade" id="deleteCustomerWithOrdersConfirmation"
+		tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+		aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -90,8 +94,9 @@
 					</button>
 				</div>
 				<div class="modal-body">
-					This customer has some orders. deleting this customer will delete the orders as well.<br/> Are you sure ? <input
-						type="hidden" id="to-delete-customer-id-hidden">
+					This customer has some orders. deleting this customer will delete
+					the orders as well.<br /> Are you sure ? <input type="hidden"
+						id="to-delete-customer-id-hidden">
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
