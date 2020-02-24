@@ -28,17 +28,16 @@ public class OrderDaoTests {
 
 	private Order initOrder() {
 		Order order = new Order();
-		order.setName("firstemai@junittest.com");
+		order.setName("order Name");
 		order.setType("Type test");
 
 		Customer customer = new Customer();
 		customer.setEmail("firstemai@junittest.com");
-
 		customer.setTel("09111111111");
 		customer.setFirstName("test");
 		customer.setLastName("junit");
+
 		order.setCustomer(customer);
-		// customer.addOrder(order);
 
 		return order;
 	}

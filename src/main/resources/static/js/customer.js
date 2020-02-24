@@ -35,6 +35,24 @@ var Customers = function() {
 			
 		});
 	};
+	var checkCustomerInput = function() {
+		$("#submit-check-customer-input").click(function() {
+			var customerId = $("#hidden-customer-id").val();
+			var fname = $("#input-customer-fname").val();
+			var lname = $("#input-customer-lname").val();
+			var phone = $("#input-customer-phone").val();
+			var email = $("#input-customer-email").val();
+	
+			//verifying the data nullability
+			if (isEmpty(fname.trim()) | isEmpty(lname.trim())
+					| isEmpty(phone.trim()) | !isValidEmail(email.trim())) {
+				alert("All fields are required! ");
+				return ;
+			}
+			$('#submitCustomerConfirmation').modal('show');
+		});
+	};
+	
 	
 	// delete customer function
 	var deleteCustomer = function() {
@@ -199,6 +217,7 @@ var Customers = function() {
 			deleteCustomer();
 			deleteCustomerWithOrders();
 			submitCustomer();
+			checkCustomerInput();
 		
 		}
 	};

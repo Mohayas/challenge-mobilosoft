@@ -33,7 +33,7 @@ public class OrderMapper {
 		out.setName(in.getName());
 		out.setType(in.getType());
 		Customer customer = new Customer();
-		customer.setId(in.getCustomer().getId());
+		customer = customerMapper.asCustomer(in.getCustomer(), customer);
 		out.setCustomer(customer);
 
 		return out;

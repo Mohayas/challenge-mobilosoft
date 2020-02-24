@@ -45,7 +45,7 @@ public class Customer implements Serializable {
 	private String tel;
 
 	// bi-directional many-to-one association to Order
-	@OneToMany(cascade = CascadeType.MERGE, mappedBy = "customer", fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.PERSIST, mappedBy = "customer", fetch = FetchType.LAZY)
 	private List<Order> orders;
 
 	public Customer() {

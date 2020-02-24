@@ -77,6 +77,7 @@ public class CustomerServiceTests {
 
 	@Test
 	@Order(4)
+	@Rollback(false)
 	public void delete() {
 
 		customerService.delete(insertedCustomerId, true);
