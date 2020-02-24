@@ -73,7 +73,7 @@ var Customers = function() {
 					console.log(data)
 					// the customer's been  deleted successfully
 					if(data==2) {
-						alert("in 2 ");
+						
 					console.log(data);
 				
 					// delete customer row from table
@@ -89,7 +89,7 @@ var Customers = function() {
 					}
 					//the customer has some orders
 					if(data==3){
-						alert("in 3 ");
+						
 						$("#deleteCustomerWithOrdersConfirmation").modal("show");
 						
 					}
@@ -199,7 +199,7 @@ var Customers = function() {
 								
 							$("#submitCustomerConfirmation").modal("hide");
 							$("#modalPanelForErros").modal("show");
-							alert("500");
+						
 								console.log('ajax error');
 								throw new Error("an unexpected error occured:"+ errorThrown);
 								console.log(errorThrown);

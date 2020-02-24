@@ -34,7 +34,7 @@ var Orders = function() {
 			var orderId = $(this).attr("to-delete-id");
 			$("#hidden-order-id-to-delete").val(orderId);
 			console.log("order id :;  "+orderId);
-			alert("thr order id has been set");
+			
 			
 		});
 	};
@@ -65,14 +65,14 @@ var Orders = function() {
 							"id" : orderCustomerId
 						};
 					console.log(customer);
-						alert(customer.id);
+						
 					//verifying the user's input
-				/*	if (isEmpty(orderName.trim()) | isEmpty(orderType.trim())
+					if (isEmpty(orderName.trim()) | isEmpty(orderType.trim())
 							| isEmpty(orderCustomerId.trim())) {
-						alert("empty ");
+						alert("All fields are required ");
 						return false;
 					}
-					*/
+					
 					var order = {
 
 						"name" : orderName,
