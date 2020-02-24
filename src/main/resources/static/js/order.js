@@ -5,8 +5,7 @@ function renderTableRow(order) {
 			+ "<td>" + order.type + "</td>" + "<td>"
 			+ "<button type='button' to-update-id='" + order.id
 			+ "' class='btn btn-link update-btn'>Update</button>"
-			+ "<button type='button' to-delete-id='" + order.id
-			+ "' class='btn btn-link delete-btn'>"
+			+ "<button type='button' to-delete-id='" + order.id+"'  data-toggle='modal' data-target='#deleteOrderConfirmation' class='btn btn-link tr-delete-btn'>"
 			+ "<span class='text-danger'>Delete</span></button></td>";
 	return tr;
 }
@@ -96,7 +95,7 @@ var Orders = function() {
 							var tr = renderTableRow(data);
 
 							$('#orders-tbody').append(
-									"<tr id=tr-order-id-" + data.id + ">" + tr
+									"<tr id='tr-order-id-" + data.id + "'>" + tr
 											+ "</tr>");
 							// reset the form
 							resetUpdateFormFunc();

@@ -118,7 +118,7 @@
 					<th>Id</th>
 					<th>Name</th>
 					<th>Type</th>
-					<th>Customer</th>
+<!-- 					<th>Customer</th> -->
 					<td>Actions</td>
 				</tr>
 			</thead>
@@ -128,10 +128,10 @@
 					<td th:text="${order.id}" />
 					<td th:text="${order.name}" />
 					<td th:text="${order.type}" />
-					<td>
-					<a th:href="@{~/customer/{id}(id=${order.customer.id})}">
-					<span th:text="|${order.customer.lastName} ${order.customer.firstName}" />
-					</a></td>
+<!-- 					<td> -->
+<!-- 					<a th:href="@{~/customer/{id}(id=${order.customer.id})}"> -->
+<!-- 					<span th:text="|${order.customer.lastName} ${order.customer.firstName}" /> -->
+<!-- 					</a></td> -->
 					<td>
 						<button type="button" class="btn btn-link update-btn"
 							th:attr="to-update-id=${order.id}">Update</button>

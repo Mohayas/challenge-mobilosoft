@@ -51,7 +51,7 @@ public class CustomerController {
 	@ResponseBody
 	public CustomerDto save(@RequestBody CustomerDto customerDto) {
 
-		System.out.println(customerDto);
+		// System.out.println(customerDto);
 		customerDto = customerService.addOrUpdate(customerDto);
 		return customerDto;
 
